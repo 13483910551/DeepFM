@@ -32,7 +32,7 @@ class Model:
     def forward_propagate(self, x_index, x_value):
         pass
 
-    def train_batch(x_index, x_value, y):
+    def train_batch(self, x_index, x_value, y):
         pass
 
 
@@ -44,7 +44,4 @@ if __name__ == "__main__":
     }
     model = Model(dict, None)
     X = tf.constant([[0, 1.5, 2.5], [2, 1.1, 1.7], [1, 0.8, 0.7]], dtype=tf.float32, shape=(3, 3))
-    model.preprocess_X(X)
-    print(model.X_index)
-    print(model.X_value)
 
