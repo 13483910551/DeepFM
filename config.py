@@ -1,5 +1,8 @@
 model_conf = {
-    "embedding_size" : 8
+    "embedding_size" : 8,
+    "layer_width" : 128,
+    "layer_depth" : 4,
+    "activation_function" : "relu"
 }
 data_descr = {
     "data_path" : "data",
@@ -20,4 +23,8 @@ data_descr = {
                  'ps_calc_04', 'ps_calc_05', 'ps_calc_06', 'ps_calc_07',
                  'ps_calc_08', 'ps_calc_09', 'ps_calc_10', 'ps_calc_11',
                  'ps_calc_12', 'ps_calc_13', 'ps_calc_14']
+}
+data_size = {
+    "feature_size" : 244,
+    "field_size" : 57
 }

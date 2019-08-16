@@ -1,14 +1,30 @@
 import tensorflow as tf
+import config
+from model import DeepFM
 
-filename = "data/train.tfrecord"
-dataset = tf.data.TFRecordDataset(filename)
-iter_data = dataset.make_one_shot_iterator()
+train_file = "data/train.tfrecord"
+val_file = "data/val.tfrecord"
 
-features = {
-    "index" : tf.FixedLenFeature(shape=(1, 57), dtype=tf.int64, default_value=None),
-    "value" : tf.FixedLenFeature(shape=(1, 57), dtype=tf.float32),
-    "target" : tf.FixedLenFeature(shape=(), dtype=tf.int64),
-}
-parsed_example = tf.parse_single_example(iter_data.get_next(), features)
-with tf.Session() as sess:
-    print(sess.run(parsed_example['target']))
+def parsing_record(record):
+    features = {
+    "index" : tf.FixedLenFeature(shape=(57,), dtype=tf.int64, default_value=None),
+    "value" : tf.FixedLenFeature(shape=(57,), dtype=tf.float32),
+    "target" : tf.FixedLenFeature(shape=(), dtype=tf.float32),
+    }
+    parsed_example = tf.parse_single_example(record, features)
+    return parsed_example
+def main():
+    dataset_train = tf.data.TFRecordDataset(train_file)
+    dataset_val = tf.data.TFRecordDataset(val_file)
+
+    dataset_train = dataset_train.map(parsing_record)
+    dataset_val = dataset_val.map(parsing_record)
+    
+    deepFM = DeepFM(config.data_size["feature_size"], 
+                    config.data_size["field_size"], config.model_conf)
+    deepFM.train(dataset_train, dataset_val=dataset_val, epochs=500, batch_size=128)
+
+if __name__ == "__main__":
+    main()
+
+
